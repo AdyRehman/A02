@@ -14,7 +14,7 @@ type Block struct {
 
 func calculate_hash(b *Block) []byte {
 	prev_hash_string := fmt.Sprintf("%p", b.prevHash)
-	curr_hash_string := b.transaction + prev_hash_string
+	curr_hash_string :=  b.transaction + prev_hash_string
 	bytes := sha256.Sum256([]byte(curr_hash_string))
 	return bytes[:]
 }
