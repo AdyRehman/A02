@@ -1,4 +1,4 @@
-package A_01
+package blockchain
 
 import (
 	"bytes"
@@ -35,7 +35,7 @@ func ListBlocks(chainHead *Block) {
 		fmt.Printf("Blockchain is Empty!!")
 	} else {
 		for i := chainHead; i != nil; i = i.prevPointer {
-			fmt.Print("Transaction: ",i," ", i.transaction, "\n")
+			fmt.Print("Transaction: ", i.transaction, "\n")
 		}
 	}
 }
