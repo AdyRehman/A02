@@ -7,14 +7,14 @@ import (
 )
 
 type Block struct {
-	transaction string
-	prevPointer *Block
-	prevHash    []byte
+	Transaction string
+	PrevPointer *Block
+	PrevHash    []byte
 }
 
 func calculate_hash(b *Block) []byte {
-	prev_hash_string := fmt.Sprintf("%p", b.prevHash)
-	curr_hash_string :=  b.transaction + prev_hash_string
+	prev_hash_string := fmt.Sprintf("%p", b.PrevHash)
+	curr_hash_string := b.Transaction + prev_hash_string
 	bytes := sha256.Sum256([]byte(curr_hash_string))
 	return bytes[:]
 }
@@ -25,7 +25,7 @@ func InsertBlock(transaction string, chainHead *Block) *Block {
 		return chainHead
 	} else {
 		temp_block := &Block{transaction, chainHead, nil}
-		temp_block.prevHash = calculate_hash(chainHead)
+		temp_block.PrevHash = calculate_hash(chainHead)
 		return temp_block
 	}
 }
@@ -34,21 +34,21 @@ func ListBlocks(chainHead *Block) {
 	if chainHead == nil {
 		fmt.Printf("Blockchain is Empty!!")
 	} else {
-		for i := chainHead; i != nil; i = i.prevPointer {
-			fmt.Print("Transaction: ", i.transaction, "\n")
+		for i := chainHead; i != nil; i = i.PrevPointer {
+			fmt.Print("Transaction: ", i.Transaction, "\n")
 		}
 	}
 }
 
-func  ChangeBlock(oldTrans string, newTrans string, chainHead *Block) {
+func ChangeBlock(oldTrans string, newTrans string, chainHead *Block) {
 	if chainHead == nil {
 		fmt.Printf("Blockchain is Empty!!")
 	} else {
-		for i := chainHead; i != nil; i = chainHead.prevPointer {
-			if chainHead.transaction == oldTrans {
-				chainHead.transaction = newTrans
+		for i := chainHead; i != nil; i = chainHead.PrevPointer {
+			if chainHead.Transaction == oldTrans {
+				chainHead.Transaction = newTrans
 			} else {
-				chainHead = chainHead.prevPointer
+				chainHead = chainHead.PrevPointer
 			}
 		}
 	}
@@ -56,9 +56,9 @@ func  ChangeBlock(oldTrans string, newTrans string, chainHead *Block) {
 
 func VerifyChain(chainHead *Block) {
 	invalid := 0
-	for i := chainHead; i.prevPointer != nil; i = i.prevPointer {
-		if bytes.Compare(i.prevHash, calculate_hash(i.prevPointer)) != 0 {
-			fmt.Print("block chain is compromised ", i.prevPointer.transaction, " is fake", "\n")
+	for i := chainHead; i.PrevPointer != nil; i = i.PrevPointer {
+		if bytes.Compare(i.PrevHash, calculate_hash(i.PrevPointer)) != 0 {
+			fmt.Print("block chain is compromised ", i.PrevPointer.Transaction, " is fake", "\n")
 			invalid = 1
 		}
 	}
